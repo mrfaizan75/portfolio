@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecureVault | Password Generator</title>
+    <style>
+        body { font-family: sans-serif; background: #f0fdf4; display: flex; justify-content: center; padding-top: 50px; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 350px; }
+        h2 { color: #15803d; margin-top: 0; }
+        .result { background: #f3f4f6; padding: 15px; border-radius: 8px; word-break: break-all; font-family: monospace; margin-bottom: 20px; border: 1px solid #d1d5db; }
+        button { width: 100%; background: #15803d; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #166534; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>SecureVault</h2>
+        <div class="result" id="display">Click Generate</div>
+        <button onclick="generate()">Generate Secure Password</button>
+    </div>
+
+    <script>
+        function generate() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            let password = "";
+            for (let i = 0; i < 16; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('display').innerText = password;
+        }
+    </script>
+</body>
+</html>

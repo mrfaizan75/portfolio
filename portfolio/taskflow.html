@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Time Tracker</title>
+    <style>
+        :root {
+            --accent: #15803d;
+            --bg: #f0fdf4;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding-top: 50px; }
+        .card { background: white; padding: 2rem; border-radius: 12px; width: 400px; border: 1px solid #bbf7d0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h2 { color: var(--accent); margin-top: 0; }
+        .input-group { display: flex; gap: 5px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border: 1px solid #d1fae5; border-radius: 6px; outline: none; }
+        button#addBtn { background: var(--accent); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        
+        ul { list-style: none; padding: 0; }
+        li { 
+            background: #f9fafb; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            border: 1px solid #edf2f7; 
+            display: flex; 
+            flex-direction: column;
+            gap: 10px;
+        }
+        .task-header { display: flex; justify-content: space-between; align-items: center; }
+        .task-text { font-weight: 500; color: #333; }
+        .done-btn { background: #15803d; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        
+        .completion-msg { 
+            font-size: 0.8rem; 
+            color: #666; 
+            font-style: italic; 
+            border-top: 1px dashed #ccc;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>TaskFlow Manager</h2>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Enter task name...">
+            <button id="addBtn" onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const taskText = input.value.trim();
+            if (taskText === "") return;
+
+            // Capture the exact time the task was created
+            const startTime = new Date();
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="task-header">
+                    <span class="task-text">${taskText}</span>
+                    <button class="done-btn" onclick="completeTask(this, ${startTime.getTime()})">Mark Done</button>
+                </div>
+                <div class="time-info" style="font-size: 0.7rem; color: #999;">Created at: ${startTime.toLocaleTimeString()}</div>
+            `;
+            
+            document.getElementById('taskList').appendChild(li);
+            input.value = "";
+            input.focus();
+        }
+
+        function completeTask(button, startTimestamp) {
+            const endTime = new Date();
+            const startTime = new Date(startTimestamp);
+            
+            // Calculate difference in seconds
+            const diffInSeconds = Math.floor((endTime - startTime) / 1000);
+            
+            let timeString = "";
+            if (diffInSeconds < 60) {
+                timeString = `${diffInSeconds} seconds`;
+            } else {
+                const minutes = Math.floor(diffInSeconds / 60);
+                const seconds = diffInSeconds % 60;
+                timeString = `${minutes} minute(s) and ${seconds} second(s)`;
+            }
+
+            // Get the parent LI
+            const li = button.parentElement.parentElement;
+            
+            // Update the UI to show completion
+            li.style.opacity = "0.7";
+            li.style.background = "#e8f5e9";
+            
+            // Remove the button and add the completion statement
+            button.remove();
+            const msg = document.createElement('div');
+            msg.className = 'completion-msg';
+            msg.innerText = `✅ Task was completed in ${timeString}.`;
+            li.appendChild(msg);
+        }
+
+        // Support for Enter key
+        document.getElementById('taskInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+    </script>
+</body>
+</html>

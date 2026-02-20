@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCheck | Budget Tracker</title>
+    <style>
+        :root {
+            --accent: #15803d;
+            --bg: #f0fdf4;
+            --error: #dc2626;
+        }
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background: var(--bg); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 20px; 
+            width: 380px; 
+            border: 1px solid #bbf7d0; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        h3 { color: #666; margin: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .balance { 
+            font-size: 2.5rem; 
+            color: var(--accent); 
+            margin: 5px 0; 
+            font-weight: 800;
+        }
+        .input-group { margin-bottom: 20px; }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #d1fae5; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            outline: none;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        button { 
+            width: 100%; 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+        
+        /* History Section */
+        .history-container {
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        h4 { margin: 0 0 10px; font-size: 0.85rem; color: #999; }
+        #historyList { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            max-height: 150px; 
+            overflow-y: auto; 
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background: #f9fafb;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            border-left: 4px solid #ccc;
+        }
+        .item.plus { border-left-color: var(--accent); color: var(--accent); }
+        .item.minus { border-left-color: var(--error); color: var(--error); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h3>Total Balance</h3>
+            <div class="balance" id="balance">$0.00</div>
+        </div>
+        
+        <div class="input-group">
+            <input type="number" id="amount" placeholder="Enter amount (e.g. 100 or -50)">
+            <button onclick="addTransaction()">Add Transaction</button>
+        </div>
+        
+        <div class="history-container">
+            <h4>History</h4>
+            <ul id="historyList">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        let total = 0;
+
+        function addTransaction() {
+            const input = document.getElementById('amount');
+            const list = document.getElementById('historyList');
+            const val = parseFloat(input.value);
+
+            if (isNaN(val) || input.value.trim() === "") {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            // Update Total
+            total += val;
+            document.getElementById('balance').innerText = `$${total.toFixed(2)}`;
+
+            // Create History Item
+            const li = document.createElement('li');
+            li.classList.add('item', val > 0 ? 'plus' : 'minus');
+            
+            const type = val > 0 ? "Income" : "Expense";
+            const displayVal = (val > 0 ? "+" : "") + val.toFixed(2);
+            
+            li.innerHTML = `<span>${type}</span> <span>${displayVal}</span>`;
+            
+            // Add to top of list
+            list.insertBefore(li, list.firstChild);
+
+            // Clear and focus
+            input.value = "";
+            input.focus();
+        }
+
+        // Enter key support
+        document.getElementById('amount').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTransaction();
+        });
+    </script>
+</body>
+</html>

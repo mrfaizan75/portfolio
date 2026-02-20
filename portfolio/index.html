@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Faizan Choudhary | Portfolio</title>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #f0fdf4; 
+            --accent: #15803d; 
+            --accent-glow: rgba(21, 128, 61, 0.2);
+            --error-color: #dc2626;
+            --text-main: #052e16; 
+            --text-dim: #166534; 
+            --nav-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            background: var(--nav-bg);
+            border-bottom: 1px solid #d1fae5;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--accent); text-decoration: none; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-size: 0.9rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .container { width: 90%; max-width: 1000px; padding: 120px 0 60px; }
+        section { padding: 60px 0; }
+
+        header { border-left: 4px solid var(--accent); padding-left: 25px; margin-bottom: 60px; }
+        h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--text-main); }
+        h1 span { color: var(--accent); }
+
+        /* SKILLS */
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 25px; }
+        .skill-card { background: var(--card-bg); padding: 15px 25px; border-radius: 10px; border: 1px solid #bbf7d0; color: var(--accent); font-weight: 500; }
+
+        /* PROJECTS */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+        .project-card { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 16px; 
+            border: 1px solid #bbf7d0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .project-card h3 { color: var(--accent); margin-top: 0; }
+        .project-card p { color: var(--text-dim); margin-bottom: 20px; font-size: 0.95rem; }
+        
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .live-btn { 
+            background: var(--accent); 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+        }
+        .code-link { 
+            color: var(--text-dim); 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            text-align: center; 
+            opacity: 0.7;
+        }
+        .code-link:hover { opacity: 1; text-decoration: underline; }
+
+        /* CONTACT FORM */
+        .contact-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid #bbf7d0; }
+        form { display: flex; flex-direction: column; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
+        
+        label { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
+        
+        input { 
+            padding: 12px; 
+            background: #ffffff; 
+            border: 1px solid #bbf7d0; 
+            border-radius: 8px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: border-color 0.3s;
+        }
+
+        input.invalid { border-color: var(--error-color); }
+        input.valid { border-color: #22c55e; }
+
+        .error-hint { 
+            color: var(--error-color); 
+            font-size: 0.75rem; 
+            height: 14px; 
+            margin-top: -4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .error-hint.visible { opacity: 1; }
+
+        .submit-btn { 
+            padding: 12px; 
+            background: var(--accent); 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            opacity: 0.5;
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+
+        .submit-btn.enabled { opacity: 1; cursor: pointer; }
+        .submit-btn:hover:not(:disabled) { background-color: #166534; }
+
+        footer { width: 100%; padding: 60px 0; text-align: center; border-top: 1px solid #d1fae5; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">FAIZAN.</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skill">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <header id="home">
+            <h1>Hi, I'm <span>Faizan Choudhary</span></h1>
+            <p style="color: var(--text-dim); font-family: monospace;">> IT Student & Aspiring Developer_</p>
+        </header>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <p>
+                I’m an 18-year-old IT student currently bridging the gap between academic theory and real-world execution. 
+                My focus is on mastering <strong>modern web standards</strong> and perfecting <strong>data validation logic</strong>. 
+                I believe every line of code is an opportunity to solve a problem more efficiently than the day before.
+            </p>
+        </section>
+
+        <section id="skill">
+            <h2>My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">HTML5</div>
+                <div class="skill-card">CSS3</div>
+                <div class="skill-card">JavaScript</div>
+                <div class="skill-card">React</div>
+                <div class="skill-card">Validation Logic</div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>SecureVault Generator</h3>
+                    <p>A logic-driven tool that generates cryptographically strong passwords with custom security parameters.</p>
+                    <div class="btn-group">
+                        <a href="portfolio/securevault.html" target="_blank" class="live-btn">🚀 Launch App</a>
+                        <a href="https://github.com/mrfaizan75/portfolio/blob/main/portfolio/securevault.html" target="_blank" class="code-link">📁 View Source Code</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>SmartCheck Tracker</h3>
+                    <p>A real-time budget dashboard with balance tracking, transaction history, and color-coded logic.</p>
+                    <div class="btn-group">
+                        <a href="portfolio/smartcheck.html" target="_blank" class="live-btn">🚀 Launch App</a>
+                        <a href="https://github.com/mrfaizan75/portfolio/blob/main/portfolio/smartcheck.html" target="_blank" class="code-link">📁 View Source Code</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>TaskFlow Manager</h3>
+                    <p>Productivity tool featuring a "Time-Stop" algorithm to calculate exactly how long each task takes.</p>
+                    <div class="btn-group">
+                        <a href="portfolio/taskflow.html" target="_blank" class="live-btn">🚀 Launch App</a>
+                        <a href="https://github.com/mrfaizan75/portfolio/blob/main/portfolio/taskflow.html" target="_blank" class="code-link">📁 View Source Code</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-box">
+                <h2>Let's Connect</h2>
+                <form id="contact-form" novalidate>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="user-email" placeholder="name@example.com" autocomplete="off">
+                        <div id="email-error" class="error-hint">Please enter a valid email address.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number (10 Digits)</label>
+                        <input type="tel" id="user-phone" placeholder="9876543210" maxlength="10">
+                        <div id="phone-error" class="error-hint">Enter a valid 10-digit phone number.</div>
+                    </div>
+                    <button type="submit" id="submit-btn" class="submit-btn" disabled>Submit Information</button>
+                </form>
+                <p id="response-msg" style="text-align: center; margin-top: 20px; font-weight: bold;"></p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p style="color: var(--text-dim);">&copy; 2026 Faizan Choudhary. Built with precision.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('contact-form');
+        const emailInput = document.getElementById('user-email');
+        const phoneInput = document.getElementById('user-phone');
+        const submitBtn = document.getElementById('submit-btn');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10}$/;
+
+        function getValidationStatus() {
+            return emailRegex.test(emailInput.value) && phoneRegex.test(phoneInput.value);
+        }
+
+        function validateForm() {
+            const isEmailValid = emailRegex.test(emailInput.value);
+            const isPhoneValid = phoneRegex.test(phoneInput.value);
+
+            if (emailInput.value === "") {
+                emailInput.classList.remove('invalid', 'valid');
+                document.getElementById('email-error').classList.remove('visible');
+            } else if (!isEmailValid) {
+                emailInput.classList.add('invalid');
+                emailInput.classList.remove('valid');
+                document.getElementById('email-error').classList.add('visible');
+            } else {
+                emailInput.classList.remove('invalid');
+                emailInput.classList.add('valid');
+                document.getElementById('email-error').classList.remove('visible');
+            }
+
+            if (phoneInput.value === "") {
+                phoneInput.classList.remove('invalid', 'valid');
+                document.getElementById('phone-error').classList.remove('visible');
+            } else if (!isPhoneValid) {
+                phoneInput.classList.add('invalid');
+                phoneInput.classList.remove('valid');
+                document.getElementById('phone-error').classList.add('visible');
+            } else {
+                phoneInput.classList.remove('invalid');
+                phoneInput.classList.add('valid');
+                document.getElementById('phone-error').classList.remove('visible');
+            }
+
+            if (isEmailValid && isPhoneValid) {
+                submitBtn.classList.add('enabled');
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.classList.remove('enabled');
+                submitBtn.disabled = true;
+            }
+        }
+
+        emailInput.addEventListener('input', validateForm);
+        phoneInput.addEventListener('input', validateForm);
+
+        form.addEventListener('keydown', (e) => {
+            if (e.key === "Enter" && !getValidationStatus()) {
+                e.preventDefault();
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!getValidationStatus()) return;
+
+            const msg = document.getElementById('response-msg');
+            msg.style.color = '#15803d';
+            msg.innerText = "Form submitted successfully! Thanks for reaching out.";
+            
+            form.reset();
+            validateForm(); 
+        });
+
+        validateForm(); 
+    </script>
+</body>
+</html>
